@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สื่อการเรียนรู้โต้ตอบ: ทรัพยากรธรณีและวัฏจักรหิน (ม.4)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Inter & Noto Sans Thai -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background-color: #0f172a;
+            color: #f8fafc;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header Section -->
+    <header class="bg-slate-900 border-b border-slate-800 sticky top-0 z-50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-orange-500 to-amber-400 p-2.5 rounded-xl shadow-md">
+                    <svg class="w-6 h-6 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-amber-200 to-orange-400">
+                        ทรัพยากรธรณี: วัฏจักรหินและการเกิดหิน
+                    </h1>
+                    <p class="text-xs sm:text-sm text-slate-400">สื่อการเรียนรู้แบบโต้ตอบสำหรับนักเรียนชั้นมัธยมศึกษาปีที่ 4</p>
+                </div>
+            </div>
+            <!-- Navigation Tabs -->
+            <nav class="flex bg-slate-800/80 p-1 rounded-xl border border-slate-700/50">
+                <button onclick="switchTab('simulation')" id="tab-sim" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 bg-amber-500 text-slate-950 font-semibold shadow">
+                    🧪 แบบจำลองโต้ตอบ
+                </button>
+                <button onclick="switchTab('knowledge')" id="tab-know" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-300 hover:text-white">
+                    📚 สรุปความรู้ 3 หิน
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-quiz" class="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-300 hover:text-white">
+                    ✏️ แบบทดสอบ (3 ข้อ)
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8 flex-grow w-full">
+
+        <!-- TAB 1: SIMULATION & INTERACTIVE LAB -->
+        <section id="section-simulation" class="space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                
+                <!-- Left Control Panel -->
+                <div class="lg:col-span-5 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-xl flex flex-col justify-between space-y-6">
+                    <div>
+                        <div class="border-b border-slate-800 pb-3 mb-4">
+                            <h2 class="text-lg font-bold text-amber-400 flex items-center gap-2">
+                                ⚙️ ปรับสภาวะแวดล้อมทางธรณีวิทยา
+                            </h2>
+                            <p class="text-xs text-slate-400 mt-1">ทดลองปรับค่าอุณหภูมิ/ความดัน และความลึก เพื่อดูการเปลี่ยนสถานะและการตกผลึกของหิน</p>
+                        </div>
+
+                        <!-- Variable 1: Temp & Pressure -->
+                        <div class="space-y-2 mb-6">
+                            <div class="flex justify-between items-center">
+                                <label class="text-sm font-medium text-slate-200 flex items-center gap-1.5">
+                                    <span>🔥 อุณหภูมิและความดัน</span>
+                                </label>
+                                <span id="temp-val" class="text-sm font-bold text-amber-400 bg-amber-950/50 px-2.5 py-1 rounded-md border border-amber-800/50">
+                                    700 °C
+                                </span>
+                            </div>
+                            <input type="range" id="slider-temp" min="100" max="1300" step="10" value="700" 
+                                class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-amber-500">
+                            <div class="flex justify-between text-xs text-slate-500">
+                                <span>100°C (ตื้น/เย็น)</span>
+                                <span>700°C (แปรสภาพ)</span>
+                                <span>1300°C (หลอมเหลว)</span>
+                            </div>
+                        </div>
+
+                        <!-- Variable 2: Depth -->
+                        <div class="space-y-2 mb-6">
+                            <div class="flex justify-between items-center">
+                                <label class="text-sm font-medium text-slate-200 flex items-center gap-1.5">
+                                    <span>📍 ความลึกใต้ผิวโลก (Depth)</span>
+                                </label>
+                                <span id="depth-val" class="text-sm font-bold text-cyan-400 bg-cyan-950/50 px-2.5 py-1 rounded-md border border-cyan-800/50">
+                                    15 กม.
+                                </span>
+                            </div>
+                            <input type="range" id="slider-depth" min="0" max="40" step="1" value="15" 
+                                class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-500">
+                            <div class="flex justify-between text-xs text-slate-500">
+                                <span>0 กม. (บนผิวโลก)</span>
+                                <span>20 กม. (ใต้ดินชั้นกลาง)</span>
+                                <span>40 กม. (ลึกมาก/เนื้อโลก)</span>
+                            </div>
+                        </div>
+
+                        <!-- Quick Presets -->
+                        <div class="space-y-2">
+                            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider">โหมดจำลองสถานการณ์ด่วน:</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button onclick="setPreset(1200, 2)" class="px-2 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-amber-300 border border-slate-700 transition">
+                                    🌋 ลาวาปะทุเย็นตัวไว
+                                </button>
+                                <button onclick="setPreset(1000, 35)" class="px-2 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-red-300 border border-slate-700 transition">
+                                    🌋 แมกมาเย็นตัวช้า
+                                </button>
+                                <button onclick="setPreset(650, 25)" class="px-2 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-lg text-emerald-300 border border-slate-700 transition">
+                                    💎 การแปรสภาพ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic State Info Card -->
+                    <div id="status-card" class="bg-slate-800/80 rounded-xl p-4 border border-slate-700 transition-all duration-300">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span id="status-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-500 text-slate-950">
+                                กำลังประมวลผล
+                            </span>
+                            <h3 id="status-title" class="font-bold text-slate-100 text-sm sm:text-base">สถานะธรณีวิทยา</h3>
+                        </div>
+                        <p id="status-desc" class="text-xs sm:text-sm text-slate-300 leading-relaxed mt-2">
+                            คำอธิบายสภาวะทางธรณีวิทยาจะปรากฏขึ้นที่นี่เมื่อปรับเปลี่ยนตัวแปร
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Right Interactive Canvas Area -->
+                <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col shadow-xl">
+                    <div class="flex justify-between items-center mb-3 px-2">
+                        <div class="flex items-center gap-2">
+                            <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
+                            <h2 class="text-sm font-semibold text-slate-300">การแสดงผลแบบจำลองโครงสร้างและเนื้อหิน (Real-time Canvas)</h2>
+                        </div>
+                        <span class="text-xs bg-slate-800 text-slate-400 px-2.5 py-1 rounded-md border border-slate-700">
+                            อัตราซูม: ระดับไมโครสโคป
+                        </span>
+                    </div>
+
+                    <!-- Canvas Box -->
+                    <div class="relative w-full aspect-video sm:aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+                        <canvas id="rockCanvas" class="w-full h-full block cursor-crosshair"></canvas>
+                        
+                        <!-- Overlay Indicator -->
+                        <div class="absolute bottom-3 left-3 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/80 text-xs text-slate-300 flex items-center gap-2 shadow-lg">
+                            <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                            <span id="grain-size-text">ขนาดผลึก/เม็ดหิน: กำลังคำนวณ</span>
+                        </div>
+                    </div>
+
+                    <!-- Legend / Guide -->
+                    <div class="mt-3 grid grid-cols-3 gap-2 text-center text-xs text-slate-400">
+                        <div class="bg-slate-800/40 py-1.5 rounded-lg border border-slate-800">
+                            <span class="inline-block w-2.5 h-2.5 rounded-full bg-orange-500 mr-1"></span> สารหลอมเหลว (Magma/Lava)
+                        </div>
+                        <div class="bg-slate-800/40 py-1.5 rounded-lg border border-slate-800">
+                            <span class="inline-block w-2.5 h-2.5 rounded-full bg-amber-200 mr-1"></span> ผลึกแร่ตกผลึก (Crystals)
+                        </div>
+                        <div class="bg-slate-800/40 py-1.5 rounded-lg border border-slate-800">
+                            <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 mr-1"></span> ริ้วขนาน/ชั้นตะกอน
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TAB 2: KNOWLEDGE SUMMARY -->
+        <section id="section-knowledge" class="hidden space-y-6">
+            <div class="text-center max-w-3xl mx-auto mb-8">
+                <h2 class="text-2xl font-bold text-amber-400 mb-2">สรุปความรู้: ประเภทของหิน 3 ประเภท</h2>
+                <p class="text-slate-400 text-sm">จำแนกตามลักษณะกระบวนการเกิด สภาพแวดล้อมทางธรณีวิทยา และลักษณะเนื้อหิน</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Igneous Rock Card -->
+                <div class="bg-slate-900 border border-amber-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-orange-500/10 rounded-bl-full pointer-events-none"></div>
+                    <div>
+                        <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center text-orange-400 text-2xl font-bold mb-4 border border-orange-500/30">
+                            🌋
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-100 mb-2">1. หินอัคนี (Igneous Rocks)</h3>
+                        <p class="text-xs text-amber-400 font-semibold mb-4">เกิดจากการเย็นตัวและแข็งตัวของแมกมาหรือลาวา</p>
+                        
+                        <div class="space-y-3 text-xs sm:text-sm text-slate-300">
+                            <div>
+                                <h4 class="font-semibold text-slate-200 mb-1">🔥 หินอัคนีพุ (Volcanic):</h4>
+                                <p class="text-slate-400">ลาวาเย็นตัวบนผิวโลกอย่างรวดเร็ว ผลึกแร่มีขนาดเล็กมากจนมองไม่เห็นด้วยตาเปล่า เช่น <strong class="text-slate-200">หินบะซอลต์, หินพัมมิซ, หินออบซิเดียน</strong></p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-200 mb-1">🏔️ หินอัคนีแทรกซอน (Plutonic):</h4>
+                                <p class="text-slate-400">แมกมาเย็นตัวใต้ผิวโลกอย่างช้าๆ ผลึกแร่มีขนาดใหญ่และหยาบ เช่น <strong class="text-slate-200">หินแกรนิต, หินไดโอไรต์, หินแกบโบร</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-500">
+                        ลักษณะเด่น: มีผลึกแร่ประสานแน่น ไม่มีซากฟอสซิล
+                    </div>
+                </div>
+
+                <!-- Sedimentary Rock Card -->
+                <div class="bg-slate-900 border border-amber-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-amber-500/10 rounded-bl-full pointer-events-none"></div>
+                    <div>
+                        <div class="w-12 h-12 bg-amber-500/20 rounded-xl flex items-center justify-center text-amber-400 text-2xl font-bold mb-4 border border-amber-500/30">
+                            🏜️
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-100 mb-2">2. หินตะกอน (Sedimentary Rocks)</h3>
+                        <p class="text-xs text-amber-400 font-semibold mb-4">เกิดจากการสะสมตัว พัดพา และแข็งตัวของตะกอน</p>
+                        
+                        <div class="space-y-3 text-xs sm:text-sm text-slate-300">
+                            <div>
+                                <h4 class="font-semibold text-slate-200 mb-1">🧱 หินตะกอนเนื้ออนุภาค (Clastic):</h4>
+                                <p class="text-slate-400">เกิดจากกรวด ทราย หรือโคลนถูกบีบอัดและเชื่อมประสาน เช่น <strong class="text-slate-200">หินทราย, หินดินดาน, หินกรวดมน</strong></p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-200 mb-1">🧪 หินตะกอนเคมี/ชีวภาพ:</h4>
+                                <p class="text-slate-400">เกิดจากการตกตะกอนทางเคมีหรือการสะสมของซากสิ่งมีชีวิต เช่น <strong class="text-slate-200">หินปูน, ถ่านหิน, หินเกลือ</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-500">
+                        ลักษณะเด่น: มักพบเป็นชั้นๆ (Stratification) และอาจพบซากดึกดำบรรพ์ (Fossils)
+                    </div>
+                </div>
+
+                <!-- Metamorphic Rock Card -->
+                <div class="bg-slate-900 border border-purple-500/30 rounded-2xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-purple-500/10 rounded-bl-full pointer-events-none"></div>
+                    <div>
+                        <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center text-purple-400 text-2xl font-bold mb-4 border border-purple-500/30">
+                            💎
+                        </div>
+                        <h3 class="text-xl font-bold text-slate-100 mb-2">3. หินแปร (Metamorphic Rocks)</h3>
+                        <p class="text-xs text-purple-400 font-semibold mb-4">เกิดจากการแปรสภาพเนื่องจากความร้อนและความดัน</p>
+                        
+                        <div class="space-y-3 text-xs sm:text-sm text-slate-300">
+                            <div>
+                                <h4 class="font-semibold text-slate-200 mb-1">🌀 หินแปรมีริ้วขนาน (Foliated):</h4>
+                                <p class="text-slate-400">ผลึกแร่เรียงตัวเป็นแถบขนานจากความดันมหาศาล เช่น <strong class="text-slate-200">หินไนส์ (แปลงมาจากแกรนิต), หินชนวน, หินชีสต์</strong></p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-200 mb-1">⚪ หินแปรไม่มีริ้วขนาน (Non-foliated):</h4>
+                                <p class="text-slate-400">แปรสภาพจากความร้อนสูงเป็นหลัก เช่น <strong class="text-slate-200">หินอ่อน (แปลงมาจากหินปูน), หินควาร์ตไซต์ (แปลงมาจากหินทราย)</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-slate-800 text-xs text-slate-500">
+                        ลักษณะเด่น: มีความแข็งแกร่งสูง มีการเรียงตัวของแร่เป็นแถบสี
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cycle Diagram Note -->
+            <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 mt-6">
+                <h4 class="text-base font-bold text-amber-400 mb-2">🔄 วัฏจักรหิน (The Rock Cycle) คืออะไร?</h4>
+                <p class="text-sm text-slate-300 leading-relaxed">
+                    หินทั้ง 3 ประเภท ไม่ได้คงอยู่ถาวร แต่สามารถเปลี่ยนกลับไปกลับมาเป็นหินประเภทอื่นได้ตลอดเวลาผ่านกระบวนการทางธรณีวิทยา เช่น การผุพังพัดพา (เกิดหินตะกอน), การหลอมเหลวเป็นแมกมาและเย็นตัว (เกิดหินอัคนี) และการได้รับความร้อนและความดันใต้ผิวโลก (เกิดหินแปร)
+                </p>
+            </div>
+        </section>
+
+        <!-- TAB 3: QUIZ -->
+        <section id="section-quiz" class="hidden max-w-3xl mx-auto space-y-6">
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+                <div class="border-b border-slate-800 pb-4 mb-6 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-xl font-bold text-amber-400">✏️ แบบทดสอบประเมินความเข้าใจ</h2>
+                        <p class="text-xs text-slate-400 mt-1">เรื่อง วัฏจักรหินและการเกิดหินชนิดต่างๆ (จำนวน 3 ข้อ)</p>
+                    </div>
+                    <span class="bg-slate-800 text-amber-300 text-xs px-3 py-1.5 rounded-full border border-slate-700 font-semibold">
+                        ระดับชั้น ม.4
+                    </span>
+                </div>
+
+                <form id="quiz-form" class="space-y-8">
+                    <!-- Question 1 -->
+                    <div class="space-y-3">
+                        <p class="text-sm sm:text-base font-semibold text-slate-100">
+                            1. ถ้านักเรียนพบหินชนิดหนึ่งมี <span class="text-amber-400">ผลึกแร่ขนาดใหญ่ หยาบ และประสานตัวแน่น</span> สันนิษฐานได้ว่าหินนี้เกิดจากกระบวนการใด?
+                        </p>
+                        <div class="space-y-2 pl-2">
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q1" value="A" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ก) ลาวาเย็นตัวลงอย่างรวดเร็วบนพื้นผิวโลก</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q1" value="B" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ข) แมกมาค่อยๆ เย็นตัวลงอย่างช้าๆ ใต้ผิวโลกที่ความลึกมาก</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q1" value="C" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ค) การทับถมของตะกอนทรายในทะเลเป็นเวลานาน</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q1" value="D" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ง) การได้รับความร้อนอย่างเดียวจนหินละลายตกผลึกใหม่</span>
+                            </label>
+                        </div>
+                        <div id="explain-q1" class="hidden p-3 rounded-lg text-xs sm:text-sm mt-2"></div>
+                    </div>
+
+                    <!-- Question 2 -->
+                    <div class="space-y-3">
+                        <p class="text-sm sm:text-base font-semibold text-slate-100">
+                            2. หินชนิดใดต่อไปนี้ เกิดจากการแปรสภาพเนื่องจาก <span class="text-purple-400">ความดันและความร้อนสูง</span> จนทำให้ผลึกแร่เรียงตัวเป็นริ้วขนาน (Foliation)?
+                        </p>
+                        <div class="space-y-2 pl-2">
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q2" value="A" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ก) หินอ่อน (Marble)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q2" value="B" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ข) หินบะซอลต์ (Basalt)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q2" value="C" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ค) หินไนส์ (Gneiss)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q2" value="D" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ง) หินทราย (Sandstone)</span>
+                            </label>
+                        </div>
+                        <div id="explain-q2" class="hidden p-3 rounded-lg text-xs sm:text-sm mt-2"></div>
+                    </div>
+
+                    <!-- Question 3 -->
+                    <div class="space-y-3">
+                        <p class="text-sm sm:text-base font-semibold text-slate-100">
+                            3. หากนำหินปูน (Sedimentary Rock) ไปวางไว้ในบริเวณที่มี <span class="text-cyan-400">ความลึกและอุณหภูมิสูงขึ้นมากๆ</span> โดยที่หินยังไม่ทันหลอมเหลวเป็นแมกมา หินปูนจะเปลี่ยนสภาพเป็นหินชนิดใด?
+                        </p>
+                        <div class="space-y-2 pl-2">
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q3" value="A" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ก) หินอ่อน (Marble)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q3" value="B" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ข) หินแกรนิต (Granite)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q3" value="C" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ค) หินควาร์ตไซต์ (Quartzite)</span>
+                            </label>
+                            <label class="flex items-center space-x-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/50 hover:bg-slate-800 cursor-pointer transition">
+                                <input type="radio" name="q3" value="D" class="accent-amber-500">
+                                <span class="text-xs sm:text-sm text-slate-300">ง) หินพัมมิซ (Pumice)</span>
+                            </label>
+                        </div>
+                        <div id="explain-q3" class="hidden p-3 rounded-lg text-xs sm:text-sm mt-2"></div>
+                    </div>
+
+                    <!-- Submit & Result Button -->
+                    <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <button type="button" onclick="checkQuiz()" class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-slate-950 font-bold rounded-xl shadow-lg transition">
+                            ตรวจคำตอบ & ดูสรุปคะแนน
+                        </button>
+                        <div id="quiz-result-score" class="hidden font-bold text-lg text-amber-400"></div>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-4 text-center text-xs text-slate-500">
+        <p>สื่อการเรียนการสอนวิทยาศาสตร์โลกและอวกาศ ชั้น ม.4 | เรื่อง ทรัพยากรธรณีและวัฏจักรหิน</p>
+    </footer>
+
+    <!-- Interactive Logic & Canvas Animation Script -->
+    <script>
+        // Tab Navigation Logic
+        function switchTab(tab) {
+            document.getElementById('section-simulation').classList.add('hidden');
+            document.getElementById('section-knowledge').classList.add('hidden');
+            document.getElementById('section-quiz').classList.add('hidden');
+
+            document.getElementById('tab-sim').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-300 hover:text-white";
+            document.getElementById('tab-know').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-300 hover:text-white";
+            document.getElementById('tab-quiz').className = "px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 text-slate-300 hover:text-white";
+
+            if (tab === 'simulation') {
+                document.getElementById('section-simulation').classList.remove('hidden');
+                document.getElementById('tab-sim').className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-amber-500 text-slate-950 shadow";
+            } else if (tab === 'knowledge') {
+                document.getElementById('section-knowledge').classList.remove('hidden');
+                document.getElementById('tab-know').className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-amber-500 text-slate-950 shadow";
+            } else if (tab === 'quiz') {
+                document.getElementById('section-quiz').classList.remove('hidden');
+                document.getElementById('tab-quiz').className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200 bg-amber-500 text-slate-950 shadow";
+            }
+        }
+
+        // Canvas Elements & Controls
+        const canvas = document.getElementById('rockCanvas');
+        const ctx = canvas.getContext('2d');
+
+        const sliderTemp = document.getElementById('slider-temp');
+        const sliderDepth = document.getElementById('slider-depth');
+        const tempVal = document.getElementById('temp-val');
+        const depthVal = document.getElementById('depth-val');
+
+        const statusBadge = document.getElementById('status-badge');
+        const statusTitle = document.getElementById('status-title');
+        const statusDesc = document.getElementById('status-desc');
+        const grainSizeText = document.getElementById('grain-size-text');
+
+        // Particle System for Magma/Crystal render
+        let particles = [];
+        const numParticles = 120;
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            initParticles();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+
+        function initParticles() {
+            particles = [];
+            for (let i = 0; i < numParticles; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    baseRadius: Math.random() * 8 + 4,
+                    angle: Math.random() * Math.PI * 2,
+                    vx: (Math.random() - 0.5) * 1.5,
+                    vy: (Math.random() - 0.5) * 1.5,
+                    colorHue: Math.floor(Math.random() * 40) + 15 // Warm mineral tones
+                });
+            }
+        }
+
+        function setPreset(temp, depth) {
+            sliderTemp.value = temp;
+            sliderDepth.value = depth;
+            updateSimulation();
+        }
+
+        function updateSimulation() {
+            const temp = parseInt(sliderTemp.value);
+            const depth = parseInt(sliderDepth.value);
+
+            tempVal.textContent = temp + ' °C';
+            depthVal.textContent = depth + ' กม.';
+
+            // Determine Geology State
+            let stateName = "";
+            let badgeClass = "";
+            let description = "";
+            let crystalSizeLabel = "";
+
+            if (temp >= 1050) {
+                // Molten State (Magma/Lava)
+                stateName = "สารหลอมเหลว (Magma / Lava)";
+                badgeClass = "bg-red-500 text-white";
+                description = `อุณหภูมิสูงกว่า ${temp}°C ทำให้หินหลอมเหลวเป็นสารหลอมเหลวทั้งหมด หากอยู่ตื้นจะเป็น 'ลาวา' ปะทุบนผิวโลก หากอยู่ลึกจะเป็น 'แมกมา' กักเก็บใต้ดิน`;
+                crystalSizeLabel = "ยังไม่ตกผลึก (ของเหลวหลอมเหลว)";
+            } else if (temp < 1050 && temp >= 800) {
+                if (depth < 10) {
+                    // Fast Cooling Igneous (Volcanic)
+                    stateName = "หินอัคนีพุ (Volcanic Rock)";
+                    badgeClass = "bg-orange-500 text-slate-950";
+                    description = "เย็นตัวลงอย่างรวดเร็วบนหรือใกล้ผิวโลก แร่อยู่ในสภาวะตกผลึกไม่ทัน ทำให้เกิดผลึกแร่ขนาดเล็กมาก ละเอียด มองไม่เห็นด้วยตาเปล่า (เช่น หินบะซอลต์)";
+                    crystalSizeLabel = "ผลึกขนาดเล็กมาก / เนื้อละเอียด (Fine-grained)";
+                } else {
+                    // Slow Cooling Igneous (Plutonic)
+                    stateName = "หินอัคนีแทรกซอน (Plutonic Rock)";
+                    badgeClass = "bg-amber-400 text-slate-950";
+                    description = "เย็นตัวลงอย่างช้าๆ ใต้ผิวโลกที่ความลึกมาก มีเวลาให้โมเลกุลจัดเรียงตัวเป็นผลึกแร่ขนาดใหญ่และหยาบ มองเห็นชัดเจน (เช่น หินแกรนิต)";
+                    crystalSizeLabel = "ผลึกขนาดใหญ่ / เนื้อหยาบ (Coarse-grained)";
+                }
+            } else if (temp < 800 && temp >= 400 && depth >= 15) {
+                // Metamorphic Rock
+                stateName = "การแปรสภาพเกิด 'หินแปร' (Metamorphic Rock)";
+                badgeClass = "bg-purple-500 text-white";
+                description = `ความร้อนสูง (${temp}°C) ร่วมกับความดันมหาศาลที่ความลึก ${depth} กม. บีบอัดและตกผลึกใหม่ เกิดโครงสร้างเรียงตัวเป็นริ้วขนาน (Foliation) เช่น หินไนส์ หรือหินชีสต์`;
+                crystalSizeLabel = "ผลึกเรียงตัวเป็นแนวริ้วขนาน (Foliated)";
+            } else {
+                if (depth < 10) {
+                    // Sedimentary Rock Layering
+                    stateName = "หินตะกอน / หินชั้น (Sedimentary Rock)";
+                    badgeClass = "bg-emerald-500 text-slate-950";
+                    description = "อุณหภูมิและความดันต่ำ ตะกอนสะสมตัว บีบอัด และเชื่อมประสาน เกิดเป็นชั้นหินตะกอนประเภทต่างๆ เช่น หินทราย หินดินดาน";
+                    crystalSizeLabel = "เม็ดตะกอนอัดแน่น (Sedimentary Grain)";
+                } else {
+                    stateName = "หินดั้งเดิมในสภาวะเสถียร (Parent Rock)";
+                    badgeClass = "bg-blue-500 text-white";
+                    description = "อุณหภูมิและความดันอยู่ในระดับปานกลาง หินรักษาโครงสร้างเดิม หรือเริ่มเข้าสู่กระบวนการแปรสภาพระยะเริ่มต้น";
+                    crystalSizeLabel = "ผลึกแร่ปานกลาง";
+                }
+            }
+
+            statusBadge.className = `px-2.5 py-0.5 rounded-full text-xs font-bold ${badgeClass}`;
+            statusBadge.textContent = stateName;
+            statusTitle.textContent = `สภาวะที่: ${temp}°C | ลึก ${depth} กม.`;
+            statusDesc.textContent = description;
+            grainSizeText.textContent = `ลักษณะเนื้อหิน: ${crystalSizeLabel}`;
+        }
+
+        sliderTemp.addEventListener('input', updateSimulation);
+        sliderDepth.addEventListener('input', updateSimulation);
+
+        // Render Canvas Animation
+        function drawSimulation() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const temp = parseInt(sliderTemp.value);
+            const depth = parseInt(sliderDepth.value);
+
+            // Calculate Cooling / Crystal Properties based on Variables
+            const isMolten = temp >= 1050;
+            const isIgneousCooling = temp < 1050 && temp >= 800;
+            const isMetamorphic = temp < 800 && temp >= 400 && depth >= 15;
+            const isSedimentary = temp < 400 && depth < 10;
+
+            // Background glow based on Temp
+            const bgHeat = (temp - 100) / 1200;
+            ctx.fillStyle = `rgba(${Math.floor(bgHeat * 120)}, 15, 30, 1)`;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Render Rocks / Particles
+            particles.forEach((p, idx) => {
+                if (isMolten) {
+                    // Fluid movement
+                    p.x += p.vx * 1.5;
+                    p.y += p.vy * 1.5;
+
+                    if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                    if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.baseRadius * 1.2, 0, Math.PI * 2);
+                    ctx.fillStyle = `hsl(${p.colorHue}, 100%, 50%)`;
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = '#f97316';
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                } 
+                else if (isIgneousCooling) {
+                    // Crystal size depends on depth (Deep = Big crystal, Shallow = Small)
+                    const sizeMultiplier = (depth / 40) * 3 + 0.5;
+                    const r = p.baseRadius * sizeMultiplier;
+
+                    ctx.beginPath();
+                    // Polygon shape for crystals
+                    const sides = 6;
+                    for (let s = 0; s < sides; s++) {
+                        const angle = p.angle + (s * 2 * Math.PI / sides);
+                        const x = p.x + r * Math.cos(angle);
+                        const y = p.y + r * Math.sin(angle);
+                        if (s === 0) ctx.moveTo(x, y);
+                        else ctx.lineTo(x, y);
+                    }
+                    ctx.closePath();
+                    ctx.fillStyle = `hsl(${p.colorHue + 120}, 40%, ${40 + (depth * 1)}%)`;
+                    ctx.strokeStyle = '#fef08a';
+                    ctx.lineWidth = 1;
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                else if (isMetamorphic) {
+                    // Parallel Foliation lines/crystals stretched horizontally by pressure
+                    const stretchX = p.baseRadius * 3.5;
+                    const stretchY = p.baseRadius * 0.8;
+
+                    ctx.beginPath();
+                    ctx.ellipse(p.x, p.y, stretchX, stretchY, Math.PI / 12, 0, Math.PI * 2);
+                    ctx.fillStyle = (idx % 2 === 0) ? '#e9d5ff' : '#4c1d95';
+                    ctx.strokeStyle = '#c084fc';
+                    ctx.lineWidth = 1;
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                else if (isSedimentary) {
+                    // Layered rounded grains
+                    const layerY = Math.floor(p.y / 30) * 30 + 15;
+                    ctx.beginPath();
+                    ctx.arc(p.x, layerY + Math.sin(p.x * 0.05) * 4, p.baseRadius * 0.9, 0, Math.PI * 2);
+                    ctx.fillStyle = (layerY % 60 === 0) ? '#d97706' : '#78350f';
+                    ctx.strokeStyle = '#fef3c7';
+                    ctx.lineWidth = 0.5;
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                else {
+                    // Default Rock Grain
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.baseRadius, 0, Math.PI * 2);
+                    ctx.fillStyle = '#64748b';
+                    ctx.fill();
+                }
+            });
+
+            // Metamorphic pressure arrows overlay if active
+            if (isMetamorphic) {
+                ctx.fillStyle = 'rgba(192, 132, 252, 0.4)';
+                ctx.font = '12px Sarabun';
+                ctx.fillText('⬇️ ความดันมหาศาล (Pressure) ⬇️', canvas.width / 2 - 90, 25);
+                ctx.fillText('⬆️ ความดันมหาศาล (Pressure) ⬆️', canvas.width / 2 - 90, canvas.height - 15);
+            }
+
+            requestAnimationFrame(drawSimulation);
+        }
+
+        // Initialize Canvas & Simulation
+        window.onload = function() {
+            resizeCanvas();
+            updateSimulation();
+            drawSimulation();
+        };
+
+        // Quiz Logic & Feedback
+        function checkQuiz() {
+            const answers = {
+                q1: 'B',
+                q2: 'C',
+                q3: 'A'
+            };
+
+            let score = 0;
+            const form = document.getElementById('quiz-form');
+
+            // Q1 Check
+            const q1Val = form.q1.value;
+            const exp1 = document.getElementById('explain-q1');
+            exp1.classList.remove('hidden');
+            if (q1Val === answers.q1) {
+                score++;
+                exp1.className = "p-3 rounded-lg text-xs sm:text-sm mt-2 bg-emerald-950/80 text-emerald-300 border border-emerald-700";
+                exp1.innerHTML = "✅ <strong>ถูกต้อง!</strong> ผลึกแร่ขนาดใหญ่และหยาบเกิดจากการที่แมกมาเย็นตัวลงอย่างช้าๆ ในระดับลึกใต้ผิวโลก ทำให้แร่มียาวเวลาตกผลึกสมบูรณ์ (หินอัคนีแทรกซอน)";
+            } else {
+                exp1.className = "p-3 rounded-lg text-xs sm:text-sm mt-2 bg-red-950/80 text-red-300 border border-red-700";
+                exp1.innerHTML = "❌ <strong>ยังไม่ถูกต้อง!</strong> เฉลย: ข้อ ข. เพราะการเย็นตัวอย่างช้าๆ ใต้ดินลึกทำให้ผลึกแร่มียาวเวลาเติบโตจนได้ขนาดใหญ่";
+            }
+
+            // Q2 Check
+            const q2Val = form.q2.value;
+            const exp2 = document.getElementById('explain-q2');
+            exp2.classList.remove('hidden');
+            if (q2Val === answers.q2) {
+                score++;
+                exp2.className = "p-3 rounded-lg text-xs sm:text-sm mt-2 bg-emerald-950/80 text-emerald-300 border border-emerald-700";
+                exp2.innerHTML = "✅ <strong>ถูกต้อง!</strong> หินไนส์ (Gneiss) เป็นหินแปรที่มีริ้วขนานชัดเจน เกิดจากการแปรสภาพของหินแกรนิตภายใต้ความร้อนและความดันสูง";
+            } else {
+                exp2.className = "p-3 rounded-lg text-xs sm:text-sm mt-2 bg-red-950/80 text-red-300 border border-red-700";
+                exp2.innerHTML = "❌ <strong>ยังไม่ถูกต้อง!</strong> เฉลย: ข้อ ค. (หินไนส์) เป็นหินแปรที่มีแถบสีขนานกัน ส่วนหินอ่อนเป็นหินแปรแบบไม่มีริ้วขนาน";
+            }
+
+            // Q3 Check
+            const q3Val = form.q3.value;
+            const exp3 = document.getElementById('explain-q3');
+            exp3.classList.remove('hidden');
+            if (q3Val === answers.q3) {
+                score++;
+                exp3.className = "p-3 rounded-lg text-xs sm:text-sm mt-2 bg-emerald-950/80 text-emerald-300 border border-emerald-700";
+                exp3.innerHTML = "✅ <strong>ถูกต้อง!</strong> หินปูน (Limestone) เมื่อได้รับความร้อนและความดันสูงใต้ผิวโลก จะแปรสภาพกลายเป็น 'หินอ่อน' (Marble)";
+            } else {
+                exp3.className = "p-3 rounded-lg text-xs sm:text-sm mt-2 bg-red-950/80 text-red-300 border border-red-700";
+                exp3.innerHTML = "❌ <strong>ยังไม่ถูกต้อง!</strong> เฉลย: ข้อ ก. (หินอ่อน) ซึ่งเป็นหินแปรดั้งเดิมที่มาจากหินปูน";
+            }
+
+            // Display Total Score
+            const resultDiv = document.getElementById('quiz-result-score');
+            resultDiv.classList.remove('hidden');
+            resultDiv.innerHTML = `สรุปคะแนน: <span class="text-2xl font-black text-amber-400">${score} / 3</span> คะแนน`;
+        }
+    </script>
+</body>
+</html>
